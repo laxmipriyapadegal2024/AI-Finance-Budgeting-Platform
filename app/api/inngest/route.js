@@ -16,4 +16,5 @@ export const { GET, POST, PUT } = serve({
     generateMonthlyReports,
     checkBudgetAlerts,
   ],
+  signingKey: process.env.INNGEST_SIGNING_KEY,
 });
