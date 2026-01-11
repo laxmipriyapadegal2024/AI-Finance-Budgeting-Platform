@@ -1,4 +1,3 @@
-import arcjet, { createMiddleware, shield } from "@arcjet/next";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -8,21 +7,7 @@ const isProtectedRoute = createRouteMatcher([
   "/transaction(.*)",
 ]);
 
-// Create Arcjet middleware
-const aj = arcjet({
-  key: process.env.ARCJET_KEY,
-  // characteristics: ["userId"], // Track based on Clerk userId
-  rules: [
-    // Shield protection for content and security
-    shield({
-      mode: "LIVE",
-    }),
-    // detectBot removed to reduce middleware bundle size for Vercel deployment
-  ],
-});
-
-// Create base Clerk middleware
-const clerk = clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
 
   if (!userId && isProtectedRoute(req)) {
@@ -32,9 +17,6 @@ const clerk = clerkMiddleware(async (auth, req) => {
 
   return NextResponse.next();
 });
-
-// Chain middlewares - ArcJet runs first, then Clerk
-export default createMiddleware(aj, clerk);
 
 export const config = {
   matcher: [
