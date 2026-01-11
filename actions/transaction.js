@@ -236,7 +236,7 @@ export async function scanReceipt(formData) {
       throw new Error("No valid file provided");
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // Convert File to ArrayBuffer
     const arrayBuffer = await file.arrayBuffer();
@@ -292,7 +292,7 @@ export async function scanReceipt(formData) {
     }
   } catch (error) {
     console.error("Error scanning receipt:", error);
-    throw new Error("Failed to scan receipt");
+    throw new Error(`Failed to scan receipt: ${error.message}`);
   }
 }
 
